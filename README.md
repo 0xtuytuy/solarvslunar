@@ -1,6 +1,11 @@
-# Getting Started with Create React App
+LunarVSSolar is an exploration of Human Nature.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Will Optimists (gamblers) make more money than Pessimists (streamers)?
+
+Streamers pay a constant price, and make continuous rewards (every time someone gambles). 
+On the other hand, Gamblers make money by sneding money to the pot, and receiving all the streams into their wallets.
+
+Should be quite easy to run, use your common npm scripts:
 
 ## Available Scripts
 
