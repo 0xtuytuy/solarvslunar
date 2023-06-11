@@ -97,7 +97,7 @@ function App() {
       <WagmiConfig client={client}>
         <Layout> 
           <Background src={good ? "/bg-good.png": "./bg-evil.png"}/>
-          <ConnectButton/>
+          <ConnectWalletButton/>
           <PlayArea>
             {
               good 
