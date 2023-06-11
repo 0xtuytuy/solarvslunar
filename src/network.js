@@ -17,7 +17,7 @@ const network = {
   
   // new data to be used: 
   token: "0x2bF2ba13735160624a0fEaE98f6aC8F70885eA61",
-  contractAddress: "0x6B7f3c66BCb255f2d9C88aeeBE95143Da9546e65", // This is Fran's personal account for testing for now.
+  contractAddress: "0x6B7f3c66BCb255f2d9C88aeeBE95143Da9546e65",
 
 };
 

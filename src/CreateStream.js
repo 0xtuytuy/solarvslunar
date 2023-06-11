@@ -23,9 +23,13 @@ export const CreateStream = () => {
         const token = await sf.loadSuperToken(network.cashToken);
         // Write operation example
 
-        const approveOp = token.approve({ receiver: network.contractAddress, amount: "100000000000" });
-        const sendStreamOp = token.createFlow({ receiver: network.contractAddress, flowRate: ethers.utils.parseUnits(flowRate, 18).div(3600*24)});// Number(flowRate)*1e18/(3600*24) });
-        const approveSubscriptionsOp = token.approveSubscription({ publisher: network.contractAddress, indexId: "23" });
+        console.log(sf);
+        console.log(token);
+        const {contractAddress} = network;
+        console.log(contractAddress);
+        const approveOp = token.approve({ receiver: contractAddress, amount: ethers.utils.parseEther("1000")});
+        const sendStreamOp = token.createFlow({ receiver: contractAddress, flowRate: "100000" })//flowRate: ethers.utils.parseUnits(flowRate, 18).div(3600*24)});// Number(flowRate)*1e18/(3600*24) });
+        const approveSubscriptionsOp = token.approveSubscription({ publisher: contractAddress, indexId: "23" });
         const batchCall = sf.batchCall(
             [
                 approveOp,
@@ -34,7 +38,11 @@ export const CreateStream = () => {
             ]
         );
 
+        console.log(batchCall);
+        console.log("signer")
+        console.log(signer)
         const txnResponse = signer && await batchCall.exec(signer);
+        console.log(txnResponse);
         const txnReceipt = txnResponse && await txnResponse.wait();
         console.log(txnReceipt)
         // Transaction Complete when code reaches here
