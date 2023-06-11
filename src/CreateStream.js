@@ -3,6 +3,7 @@ import { Framework } from "@superfluid-finance/sdk-core";
 import network from "./network";
 import { useProvider, useSigner, useAccount } from "wagmi";
 import { useState } from "react";
+import { ethers } from "ethers";
 
 export const CreateStream = () => {
 
@@ -23,7 +24,7 @@ export const CreateStream = () => {
         // Write operation example
 
         const approveOp = token.approve({ receiver: network.contractAddress, amount: "100000000000" });
-        const sendStreamOp = token.createFlow({ receiver: network.contractAddress, flowRate });
+        const sendStreamOp = token.createFlow({ receiver: network.contractAddress, flowRate: ethers.utils.parseUnits(flowRate, 18).div(3600*24)});// Number(flowRate)*1e18/(3600*24) });
         const approveSubscriptionsOp = token.approveSubscription({ publisher: network.contractAddress, indexId: "23" });
         const batchCall = sf.batchCall(
             [
@@ -46,7 +47,7 @@ export const CreateStream = () => {
         </div>
         <div className="sendingWrapper">
           <div className="title">How much do you want to stream? (Daily)</div>
-          <input type="text" value={flowRate/3600/24} onChange={(e) => setFlowRate(e.target.value*3600*24)} />
+          <input type="text" value={flowRate} onChange={(e) => setFlowRate(e.target.value)} />
           <button onClick={sendStream}>STREAM!</button>
         </div>
             <div>{/* here we should have the average yield. If necessary, make it up */}</div>
