@@ -9,6 +9,7 @@ import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { polygonMumbai } from 'wagmi/chains';
 import { ConnectButton } from './components/ConnectWallet';
 import { ConnectWalletButton} from './components/ConnectWalletButton';
+import { useState } from 'react';
 
 const Background = styled.img`
   width: 100%;
@@ -82,64 +83,49 @@ const client = createClient({
 });
 
 function App() {
+  const [good, setGood] = useState(true);
+
+  const switchSide = () =>{
+    console.log("switching sides");
+    setGood(!good)
+  }
+  
   return (
     <div className="App">
       <header className="App-header">
       </header>
       <WagmiConfig client={client}>
         <Layout> 
-          <Background src="/bg-good.png"/>
+          <Background src={good ? "/bg-good.png": "./bg-evil.png"}/>
           <ConnectButton/>
           <PlayArea>
+            {
+              good 
+              ? <SendFunds />
+              : <CreateStream /> 
+            }
             
-            <SendFunds />
-            
-            <CreateStream /> 
 
           </PlayArea>
-          <SwitchSide/>
+          <button
+            style={{width: "180px", 
+              height: "80px", 
+              position: "absolute",
+              right: "0px",
+              bottom: "50px",
+              backgroundSize:"cover",
+              background: "/btn_evil.png",
+              backgroundSize: "100% 100%"
+            }}
+            onClick={switchSide}
+              
+          >
+            switch sides
+          </button>
         </Layout>
       </WagmiConfig>
     </div>
   );
 }
-
-export const SwitchSide= () => {
-  return  (
-    <>
-      <button
-        style={{width: "180px", 
-          height: "80px", 
-          position: "absolute",
-          right: "0px",
-          bottom: "50px",
-          backgroundSize:"cover",
-          background: "/btn_evil.png",
-          backgroundSize: "100% 100%"
-        }}
-      >
-      </button>
-    </>
-  )
-}
-
-export const ConnectButton = () => {
-  const { connect, connectors } = useConnect();
-
-  return (
-    <>
-      {connectors.map((connector) => (
-          <button
-            key={connector.id}
-            disabled={!connector.ready}
-            onClick={(e) => connect({ connector })}
-            style={{position: "absolute", top: "20px", left: "20px", boxShadow: "0px 0px 10px rgba(0,0,0,0.25)", textAlign: "center", height: "30px", width: "150px", display: "block", fontSize: "14px", fontWeight: "700", textTransform: "uppercase", color: "black", lineHeight: "25px", boxSizing: "border-box", borderRadius: "5px"}}
-          >
-            Connect
-          </button>
-      ))}
-    </>
-  );
-};
 
 export default App;
