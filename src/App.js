@@ -114,13 +114,11 @@ function App() {
               right: "0px",
               bottom: "50px",
               backgroundSize:"cover",
-              background: "/btn_evil.png",
               backgroundSize: "100% 100%"
             }}
+            className={good ? "btn-good": "btn-evil"}
             onClick={switchSide}
-              
           >
-            switch sides
           </button>
         </Layout>
       </WagmiConfig>

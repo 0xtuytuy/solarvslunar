@@ -53,3 +53,12 @@
     transform: rotate(360deg);
   }
 }
+
+
+.btn-good{
+  background: url("../public/btn_good.png");
+}
+
+.btn-evil{
+  background: url("../public/btn_evil.png");
+}
