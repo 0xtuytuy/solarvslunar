@@ -3,6 +3,7 @@ import { Framework } from "@superfluid-finance/sdk-core";
 import network from "./network";
 import { useProvider, useSigner, useAccount } from "wagmi";
 import { useEffect, useState } from "react";
+import { ethers } from "ethers";
 
 export const SendFunds = () => {
 
@@ -15,7 +16,13 @@ export const SendFunds = () => {
     useEffect(() => {
         // here we call the subgraph to get the total flowrate for the hill
         
-        
+        /*
+        sf.query.listStreams(
+            { receiver: network.contractAddress, token: network.cashToken },
+            paging: {take: 1000, skip: 0}
+        );*/
+
+
         setTotalFlowRate(10000000);
     }, []);
 
@@ -43,7 +50,7 @@ export const SendFunds = () => {
         const token = await sf.loadSuperToken(network.cashToken);
         
         // Write operation example
-        const transferOperation = token.send({ recipient: network.contractAddress, amount });
+        const transferOperation = token.send({ recipient: network.contractAddress, amount: ethers.utils.parseEther(amount) });
         const txnResponse = signer && await transferOperation.exec(signer);
         const receipt = txnResponse && await txnResponse.wait();
         setTxnReceipt(receipt);
@@ -69,10 +76,7 @@ export const SendFunds = () => {
                     <>
                         <div>Transaction Complete!</div> 
                         <div>You are now receiving</div>
-                        <div>{totalFlowRate*24/3600}/ day</div>
-                        <div>
-                            {totalFlowRate.toString()}
-                        </div>
+                        <div>{(totalFlowRate*24/3600).toFixed(2)} $FRACTION / day</div>
                     </>
                 )
             }

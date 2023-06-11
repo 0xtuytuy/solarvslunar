@@ -43,8 +43,8 @@ export const CreateStream = () => {
         <div>
             <div>The average yield is:</div>
             <div>{/* here we should have the average yield. If necessary, make it up */}</div>
-            <div>How much do you want to stream?</div>
-            <input type="text" value={flowRate} onChange={(e) => setFlowRate(e.target.value)} />
+            <div>How much do you want to stream? (Daily)</div>
+            <input type="text" value={flowRate/3600/24} onChange={(e) => setFlowRate(e.target.value*3600*24)} />
             <button onClick={sendStream}>createStream</button>
         </div>
     )

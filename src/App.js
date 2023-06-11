@@ -52,16 +52,6 @@ const PlayArea = styled.div`
 
   transition: border-radius 1s ease-in-out, box-shadow 1s ease-in-out;
 `
-
-const SwitchSide = styled.div`
-  width: 180px;
-  height: 80px;
-  position: absolute;
-  right: 0px;
-  bottom: 50px;
-  background: white;
-`
-
 const Layout = styled.main`
   min-height: 100vh;
   display: flex;
@@ -99,22 +89,57 @@ function App() {
       <WagmiConfig client={client}>
         <Layout> 
           <Background src="/bg-good.png"/>
-          <ConnectionButton>
-            <ConnectWalletButton/>
-          </ConnectionButton>
-
+          <ConnectButton/>
           <PlayArea>
+            
             <SendFunds />
+            
             <CreateStream /> 
+
           </PlayArea>
-          
-          <SwitchSide>
-            <button><img src="/btn_evil.png"/></button>
-          </SwitchSide>
+          <SwitchSide/>
         </Layout>
       </WagmiConfig>
     </div>
   );
 }
+
+export const SwitchSide= () => {
+  return  (
+    <>
+      <button
+        style={{width: "180px", 
+          height: "80px", 
+          position: "absolute",
+          right: "0px",
+          bottom: "50px",
+          backgroundSize:"cover",
+          background: "/btn_evil.png",
+          backgroundSize: "100% 100%"
+        }}
+      >
+      </button>
+    </>
+  )
+}
+
+export const ConnectButton = () => {
+  const { connect, connectors } = useConnect();
+
+  return (
+    <>
+      {connectors.map((connector) => (
+          <button
+            key={connector.id}
+            disabled={!connector.ready}
+            onClick={(e) => connect({ connector })}
+            style={{position: "absolute", top: "20px", left: "20px", boxShadow: "0px 0px 10px rgba(0,0,0,0.25)", textAlign: "center", height: "30px", width: "150px", display: "block", fontSize: "14px", fontWeight: "700", textTransform: "uppercase", color: "black", lineHeight: "25px", boxSizing: "border-box", borderRadius: "5px"}}
+          >
+            Connect
+          </button>
+      ))}
+    </>
+  );
+};
 
 export default App;
