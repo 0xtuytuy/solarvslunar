@@ -43,7 +43,7 @@ export const SendFunds = () => {
         const token = await sf.loadSuperToken(network.cashToken);
         
         // Write operation example
-        const transferOperation = token.send({ recipient: network.hillAddress, amount });
+        const transferOperation = token.send({ recipient: network.contractAddress, amount });
         const txnResponse = signer && await transferOperation.exec(signer);
         const receipt = txnResponse && await txnResponse.wait();
         setTxnReceipt(receipt);
@@ -68,7 +68,6 @@ export const SendFunds = () => {
                 : (
                     <>
                         <div>Transaction Complete!</div> 
-                        <div>Receipt: {txnReceipt}</div>
                         <div>You are now receiving</div>
                         <div>{totalFlowRate*24/3600}/ day</div>
                         <div>

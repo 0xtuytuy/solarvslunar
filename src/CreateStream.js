@@ -6,11 +6,11 @@ import { useState } from "react";
 
 export const CreateStream = () => {
 
-    const [flowRate, setFlowRate] = useState("0");
+    const [flowRate, setFlowRate] = useState("1210");
 
     const provider = useProvider();
     const { data: signer } = useSigner();
-    
+
     const sendStream = async () => {
 
         const sf = await Framework.create({
@@ -22,13 +22,20 @@ export const CreateStream = () => {
         const token = await sf.loadSuperToken(network.cashToken);
         // Write operation example
 
-        const approveOp = token.approve({ receiver: network.hillAddress, amount: "1000000000" });
-        const sendStreamOp = token.createFlow({ receiver: network.hillAddress, flowRate: "1000000000" });
-        const approveSubscriptionsOp = token.approveSubscription({ publisher: network.hillAddress, indexId: "23" });
-        const batchCall = sf.batchCall([approveOp, sendStreamOp, approveSubscriptionsOp]);
+        const approveOp = token.approve({ receiver: network.contractAddress, amount: "100000000000" });
+        const sendStreamOp = token.createFlow({ receiver: network.contractAddress, flowRate });
+        const approveSubscriptionsOp = token.approveSubscription({ publisher: network.contractAddress, indexId: "23" });
+        const batchCall = sf.batchCall(
+            [
+                approveOp, 
+                sendStreamOp, 
+                //approveSubscriptionsOp  //TODO, add this when we use the contract
+            ]
+        );
 
         const txnResponse = signer && await batchCall.exec(signer);
         const txnReceipt = txnResponse && await txnResponse.wait();
+        console.log(txnReceipt)
         // Transaction Complete when code reaches here
     }
 
