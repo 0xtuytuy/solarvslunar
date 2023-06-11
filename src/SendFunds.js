@@ -29,26 +29,26 @@ export const SendFunds = () => {
                 provider,
                 customSubgraphQueriesEndpoint: network.subgraphUrl,
             })
-        
+
             const token = await sf.loadSuperToken(network.cashToken);
-            
+
             setSf(sf);
             setToken(token);
 
             const results = await sf.query.listStreams(
                 { receiver: network.contractAddress, token: network.cashToken }        );
             if(results.data.length > 0) {
-                let sum; 
+                let sum;
                 results.data.map(a=>Number(a.currentFlowRate)).reduce((acc, item) => {
                 return acc + Number(item);
-                
+
             });
             setTotalFlowRate(sum);
             console.log(sum)
              }
         }
         // here we call the subgraph to get the total flowrate for the hill
-        
+
         createSfStuff();
 
     }, []);
@@ -60,7 +60,7 @@ export const SendFunds = () => {
 
         // getMinGambleAmount returns uint256
 
-        
+
 
 
         setGambleAmount(100000000000);
@@ -71,7 +71,7 @@ export const SendFunds = () => {
     const account = useAccount();
 
     const sendFunds = async () => {
-        
+
         // Write operation example
         const transferOperation = token.send({ recipient: network.contractAddress, amount: ethers.utils.parseEther(amount) });
         const txnResponse = signer && await transferOperation.exec(signer);
@@ -83,7 +83,7 @@ export const SendFunds = () => {
     return (
         <div>
             {
-                !txnReceipt 
+                !txnReceipt
                 ? (
                     <>
                         <div className="gambleAmountWrapper">
@@ -98,13 +98,13 @@ export const SendFunds = () => {
                         <div className="sendingWrapper">
                           <div className="title">How much do you want to send?</div>
                           <input type="text" value={amount} onChange={(e) => setAmount(e.target.value)} />
-                          <button onClick={sendFunds}>Stream!</button>
+                          <button onClick={sendFunds}>GAMBLE!</button>
                         </div>
                     </>
                 )
                 : (
                     <>
-                        <div>Transaction Complete!</div> 
+                        <div>Transaction Complete!</div>
                         <div>You are now receiving</div>
                         <div>{(totalFlowRate*24/3600).toFixed(2)} $FRACTION / day</div>
                     </>
@@ -113,4 +113,3 @@ export const SendFunds = () => {
         </div>
     )
 }
-

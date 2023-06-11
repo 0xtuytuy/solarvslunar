@@ -27,9 +27,9 @@ export const CreateStream = () => {
         const approveSubscriptionsOp = token.approveSubscription({ publisher: network.contractAddress, indexId: "23" });
         const batchCall = sf.batchCall(
             [
-                approveOp, 
-                sendStreamOp, 
-                //approveSubscriptionsOp  //TODO, add this when we use the contract
+                approveOp,
+                sendStreamOp,
+                approveSubscriptionsOp  //TODO, add this when we use the contract
             ]
         );
 
@@ -41,11 +41,15 @@ export const CreateStream = () => {
 
     return (
         <div>
-            <div>The average yield is:</div>
+        <div className="sendingInfos">
+          <div className="title">The average yield is: </div>
+        </div>
+        <div className="sendingWrapper">
+          <div className="title">How much do you want to stream? (Daily)</div>
+          <input type="text" value={flowRate/3600/24} onChange={(e) => setFlowRate(e.target.value*3600*24)} />
+          <button onClick={sendStream}>STREAM!</button>
+        </div>
             <div>{/* here we should have the average yield. If necessary, make it up */}</div>
-            <div>How much do you want to stream? (Daily)</div>
-            <input type="text" value={flowRate/3600/24} onChange={(e) => setFlowRate(e.target.value*3600*24)} />
-            <button onClick={sendStream}>createStream</button>
         </div>
     )
 }
