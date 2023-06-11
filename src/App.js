@@ -89,10 +89,12 @@ function App() {
           <Background src="/bg-good.png"/>
           <ConnectButton/>
           <PlayArea>
+            
             <SendFunds />
+            
             <CreateStream /> 
+
           </PlayArea>
-          
           <SwitchSide/>
         </Layout>
       </WagmiConfig>
