@@ -2,8 +2,18 @@ LunarVSSolar is an exploration of Human Nature.
 
 Will Optimists (gamblers) make more money than Pessimists (streamers)?
 
-Streamers pay a constant price, and make continuous rewards (every time someone gambles). 
+Streamers pay a constant price, and make continuous rewards (every time someone gambles).
 On the other hand, Gamblers make money by sneding money to the pot, and receiving all the streams into their wallets.
+
+--
+Project has been deployed on GnosisChain (Mainnet, ChainID 100).
+
+To interact, you need the native streamable Supertoken "FRACTION" (0x2bF2ba13735160624a0fEaE98f6aC8F70885eA61).
+Available via DEXes:
+https://jumper.exchange/swap?toChain=dai&toToken=0x2bf2ba13735160624a0feae98f6ac8f70885ea61
+Or the streaming faucet:
+https://fraction.fyi/faucet
+--
 
 Should be quite easy to run, use your common npm scripts:
 
