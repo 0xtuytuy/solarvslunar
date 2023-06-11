@@ -12,18 +12,34 @@ export const SendFunds = () => {
     const [totalFlowRate, setTotalFlowRate] = useState(0);
     const [gambleAmount, setGambleAmount] = useState(0);
     const [txnReceipt, setTxnReceipt] = useState("");
+    const [sf, setSf] = useState("");
+    const [token, setToken] = useState("");
 
     useEffect(() => {
+        const createSfStuff = async () => {
+            const sf = await Framework.create({
+                chainId: network.id,
+                provider,
+                customSubgraphQueriesEndpoint: network.subgraphUrl,
+            })
+        
+            const token = await sf.loadSuperToken(network.cashToken);
+            
+            setSf(sf);
+            setToken(token);
+
+            const results = await sf.query.listStreams(
+                { receiver: network.contractAddress, token: network.cashToken }        );
+            const sum = results.data.map(a=>Number(a.currentFlowRate)).reduce((acc, item) => {
+                return acc + Number(item);
+            });
+            console.log(sum)
+            setTotalFlowRate(sum);
+        }
         // here we call the subgraph to get the total flowrate for the hill
         
-        /*
-        sf.query.listStreams(
-            { receiver: network.contractAddress, token: network.cashToken },
-            paging: {take: 1000, skip: 0}
-        );*/
+        createSfStuff();
 
-
-        setTotalFlowRate(10000000);
     }, []);
 
 
@@ -41,13 +57,6 @@ export const SendFunds = () => {
     const account = useAccount();
 
     const sendFunds = async () => {
-        const sf = await Framework.create({
-            chainId: network.id,
-            provider,
-            customSubgraphQueriesEndpoint: network.subgraphUrl,
-        })
-
-        const token = await sf.loadSuperToken(network.cashToken);
         
         // Write operation example
         const transferOperation = token.send({ recipient: network.contractAddress, amount: ethers.utils.parseEther(amount) });
