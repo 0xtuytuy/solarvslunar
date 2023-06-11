@@ -59,7 +59,7 @@ export const SendFunds = () => {
                         <div>You will receive: </div>
                         <div>{totalFlowRate*24/3600}/ day</div>
                         <div>The current Gamble amount is:</div>
-                        <div>{totalFlowRate*24/3600}</div>
+                        <div>{gambleAmount}</div>
                         <div>How much do you want to send?</div>
                         <input type="text" value={amount} onChange={(e) => setAmount(e.target.value)} />
                         <button onClick={sendFunds}>Send()</button>

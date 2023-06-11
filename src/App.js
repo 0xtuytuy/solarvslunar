@@ -7,6 +7,8 @@ import { WagmiConfig, createClient, configureChains, mainnet, useConnect } from 
 import { publicProvider } from 'wagmi/providers/public';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { polygonMumbai } from 'wagmi/chains';
+import { ConnectButton } from './components/ConnectWallet';
+import { ConnectWalletButton} from './components/ConnectWalletButton';
 
 const Background = styled.img`
   width: 100%;
@@ -98,7 +100,7 @@ function App() {
         <Layout> 
           <Background src="/bg-good.png"/>
           <ConnectionButton>
-            <ConnectButton/>
+            <ConnectWalletButton/>
           </ConnectionButton>
 
           <PlayArea>
@@ -114,26 +116,5 @@ function App() {
     </div>
   );
 }
-
-export const ConnectButton = () => {
-  const { connect, connectors } = useConnect();
-
-  return (
-    <>
-      {connectors.map((connector) => (
-        <div
-          key={connector.id}
-        >
-          <button
-            disabled={!connector.ready}
-            onClick={(e) => connect({ connector })}
-          >
-            Connect
-          </button>
-        </div>
-      ))}
-    </>
-  );
-};
 
 export default App;
