@@ -1,9 +1,10 @@
 
 import { Framework } from "@superfluid-finance/sdk-core";
 import network from "./network";
-import { useProvider, useSigner, useAccount } from "wagmi";
+import { useProvider, useSigner, useAccount, useContractRead } from "wagmi";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
+import ContractABI from "./ContractABI.json";
 
 export const SendFunds = () => {
 
@@ -12,8 +13,14 @@ export const SendFunds = () => {
     const [totalFlowRate, setTotalFlowRate] = useState(0);
     const [gambleAmount, setGambleAmount] = useState(0);
     const [txnReceipt, setTxnReceipt] = useState("");
-    const [sf, setSf] = useState("");
+    const [sf, setSf] = useState();
     const [token, setToken] = useState("");
+
+    const { data: totalGamble, isError, isLoading } = useContractRead({
+        address: network.contractAddress,
+        abi: ContractABI,
+        functionName: 'getMinGambleAmount',
+      })
 
     useEffect(() => {
         const createSfStuff = async () => {
@@ -30,11 +37,15 @@ export const SendFunds = () => {
 
             const results = await sf.query.listStreams(
                 { receiver: network.contractAddress, token: network.cashToken }        );
-            const sum = results.data.map(a=>Number(a.currentFlowRate)).reduce((acc, item) => {
+            if(results.data.length > 0) {
+                let sum; 
+                results.data.map(a=>Number(a.currentFlowRate)).reduce((acc, item) => {
                 return acc + Number(item);
+                
             });
-            console.log(sum)
             setTotalFlowRate(sum);
+            console.log(sum)
+             }
         }
         // here we call the subgraph to get the total flowrate for the hill
         
@@ -48,7 +59,10 @@ export const SendFunds = () => {
         // we should then make it tick down, maybe fake it
 
         // getMinGambleAmount returns uint256
+
         
+
+
         setGambleAmount(100000000000);
     }, []);
 
@@ -72,13 +86,20 @@ export const SendFunds = () => {
                 !txnReceipt 
                 ? (
                     <>
-                        <div>You will receive: </div>
-                        <div>{totalFlowRate*24/3600}/ day</div>
-                        <div>The current Gamble amount is:</div>
-                        <div>{gambleAmount}</div>
-                        <div>How much do you want to send?</div>
-                        <input type="text" value={amount} onChange={(e) => setAmount(e.target.value)} />
-                        <button onClick={sendFunds}>Send()</button>
+                        <div className="gambleAmountWrapper">
+                          <div className="title">The current Gamble amount is:</div>
+                          <div className="gambleAmount">{totalGamble && totalGamble.toString()}</div>
+                        </div>
+
+                        <div className="sendingInfos">
+                          <div className="title">You will receive: </div>
+                          <div className="flowRate">{totalFlowRate*24/3600} <span>/ day</span></div>
+                        </div>
+                        <div className="sendingWrapper">
+                          <div className="title">How much do you want to send?</div>
+                          <input type="text" value={amount} onChange={(e) => setAmount(e.target.value)} />
+                          <button onClick={sendFunds}>Stream!</button>
+                        </div>
                     </>
                 )
                 : (

@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { WagmiConfig, createClient, configureChains, mainnet, useConnect } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
-import { polygonMumbai } from 'wagmi/chains';
+import * as chain from "wagmi/chains";
 import { ConnectButton } from './components/ConnectWallet';
 import { ConnectWalletButton} from './components/ConnectWalletButton';
 import { useState } from 'react';
@@ -66,7 +66,7 @@ const Layout = styled.main`
 // Configure chains & providers
 // To do: add in infura/ alchemy as provider so we dont hit rate limit
 const { chains, provider, webSocketProvider } = configureChains(
-  [mainnet, polygonMumbai],
+  [chain.gnosis],
   [publicProvider()] // use public provider for now
 );
 
@@ -102,10 +102,8 @@ function App() {
             {
               good 
               ? <SendFunds />
-              : <CreateStream /> 
-            }
-            
-
+              : <CreateStream />  
+          }
           </PlayArea>
           <button
             style={{width: "180px", 
