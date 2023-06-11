@@ -14,21 +14,6 @@ const Background = styled.img`
 `;
 
 const ConnectionButton = styled.div`
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  border-radius: 5px;
-  box-shadow: 0px 0px 10px rgba(0,0,0,0.25);
-  text-align: center;
-  height: 30px;
-  width: 150px;
-  display: block;
-  font-size: 14px;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: black;
-  line-height: 30px; 
-  box-sizing: border-box;
 `;
 
 
@@ -97,15 +82,11 @@ function App() {
       <WagmiConfig client={client}>
         <Layout> 
           <Background src="/bg-good.png"/>
-          <ConnectionButton>
-            <ConnectButton/>
-          </ConnectionButton>
-
+          <ConnectButton/>
           <PlayArea>
             <SendFunds />
             <CreateStream /> 
           </PlayArea>
-          
           <SwitchSide>
             <button><img src="/btn_evil.png"/></button>
           </SwitchSide>
@@ -123,6 +104,7 @@ export const ConnectButton = () => {
       {connectors.map((connector) => (
         <div
           key={connector.id}
+          className='connectbutton'
         >
           <button
             disabled={!connector.ready}
